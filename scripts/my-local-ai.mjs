@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// Keep all root-level pnpm entrypoints pointing at the same checked-out repo.
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..");
 const projectDir = join(rootDir, "my-local-ai");
 const buildDir = join(projectDir, "build");
@@ -33,6 +34,8 @@ function resolveTool(name) {
     return name;
   }
 
+  // Prefer common Windows CMake install locations so root pnpm commands work
+  // even when cmake/ctest are not present on PATH.
   const candidates = [
     join("C:\\Program Files\\CMake\\bin", `${name}.exe`),
     join("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin", `${name}.exe`),
@@ -45,6 +48,8 @@ function resolveTool(name) {
 }
 
 function findBinary(name) {
+  // Probe the common output layouts produced by the default build directory and
+  // the upstream preset-specific Windows directories.
   const candidates = [
     join(buildDir, "bin", `${name}${exeExt}`),
     join(buildDir, "bin", "Release", `${name}${exeExt}`),

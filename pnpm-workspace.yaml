@@ -1,6 +1,10 @@
 packages:
   - "my-local-ai/tools/ui"
+
+# Avoid prompting or auto-installing during pnpm run; the workspace is installed explicitly.
 verifyDepsBeforeRun: false
+
+# These UI dependencies need their install/build scripts to run on Windows.
 allowBuilds:
   "@parcel/watcher": true
   "@tailwindcss/oxide": true
