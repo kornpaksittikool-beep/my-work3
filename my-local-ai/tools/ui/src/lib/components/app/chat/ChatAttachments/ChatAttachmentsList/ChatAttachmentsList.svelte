@@ -67,6 +67,10 @@
 		mcpResourcePreviewOpen = true;
 	}
 
+	function handlePreview(item: ChatAttachmentDisplayItem, event?: MouseEvent) {
+		openPreview(item, event);
+	}
+
 	$effect(() => {
 		if (carouselRef && displayItems.length) {
 			carouselRef.resetScroll();
@@ -83,7 +87,7 @@
 		{limitToSingleRow}
 		{onFileRemove}
 		onMcpResourcePreview={openMcpResourcePreview}
-		onPreview={(i: ChatAttachmentDisplayItem, event?: MouseEvent) => openPreview(i, event)}
+		onPreview={handlePreview}
 		{readonly}
 	/>
 {/snippet}

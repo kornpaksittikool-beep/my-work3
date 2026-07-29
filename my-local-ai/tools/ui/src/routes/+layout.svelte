@@ -131,6 +131,7 @@
 	}
 
 	onMount(() => {
+		document.body.dataset.appReady = 'true';
 		updateFavicon();
 		// snapshot of every backend running stream on first load, populates the sidebar spinners
 		// so the user sees each conv that has a live inference, even ones not opened yet

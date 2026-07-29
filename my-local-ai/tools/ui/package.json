@@ -55,6 +55,7 @@
 		"clsx": "2.1.1",
 		"dexie": "4.4.3",
 		"dompurify": "3.4.11",
+		"esbuild": "0.27.7",
 		"eslint": "9.39.4",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-storybook": "10.4.2",
@@ -83,7 +84,7 @@
 		"remark-rehype": "11.1.2",
 		"sass": "1.100.0",
 		"storybook": "10.4.2",
-		"svelte": "5.56.1",
+		"svelte": "5.56.8",
 		"svelte-check": "4.6.0",
 		"svelte-sonner": "1.1.1",
 		"tailwind-merge": "3.6.0",
@@ -103,5 +104,10 @@
 	},
 	"overrides": {
 		"cookie": "1.1.1"
+	},
+	"dependencies": {
+		"katex": "^0.18.1",
+		"lowlight": "^3.3.0",
+		"unist-util-visit-parents": "^6.0.2"
 	}
 }

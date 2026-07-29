@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 // Keep all root-level pnpm entrypoints pointing at the same checked-out repo.
-const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..");
+const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const projectDir = join(rootDir, "my-local-ai");
 const buildDir = join(projectDir, "build");
 const isWindows = process.platform === "win32";
@@ -91,6 +91,6 @@ switch (command) {
     runBuiltBinary("llama");
     break;
   default:
-    console.error("Usage: node scripts\\my-local-ai.mjs <configure|build|test|server|cli|app> [-- extra args]");
+    console.error("Usage: node scripts\\my-local-ai\\runtime.mjs <configure|build|test|server|cli|app> [-- extra args]");
     process.exit(1);
 }

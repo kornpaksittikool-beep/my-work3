@@ -9,6 +9,8 @@
 #   bash scripts/dev.sh
 #   npm run dev
 
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+
 cd ../../
 
 # Ensure node_modules are installed
@@ -28,7 +30,7 @@ check_and_install_hooks() {
 
     if [ "$hooks_missing" = true ]; then
         echo "🔧 Git hooks missing, installing them..."
-        if bash "$(dirname "$0")/git-hooks/install.sh"; then
+        if bash "$script_dir/git-hooks/install.sh"; then
             echo "✅ Git hooks installed successfully"
         else
             echo "⚠️  Failed to install git hooks, continuing anyway..."
