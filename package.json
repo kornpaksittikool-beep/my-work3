@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Root pnpm entrypoints for local workspace tools",
   "scripts": {
+    "my-local-ai:model": "node .\\scripts\\my-local-ai\\download-model.mjs",
+    "my-local-ai:model:list": "node .\\scripts\\my-local-ai\\download-model.mjs --list",
+    "my-local-ai:backend": "node .\\scripts\\my-local-ai\\download-backend.mjs",
     "my-local-ai:configure": "node .\\scripts\\my-local-ai\\runtime.mjs configure",
     "my-local-ai:build": "node .\\scripts\\my-local-ai\\runtime.mjs build",
     "my-local-ai:test": "node .\\scripts\\my-local-ai\\runtime.mjs test",

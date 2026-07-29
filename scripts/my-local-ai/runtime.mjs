@@ -3,6 +3,8 @@ import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { applyModelPreset, isPortFree, loadEnv } from "./lib/env.mjs";
+
 // Keep all root-level pnpm entrypoints pointing at the same checked-out repo.
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const projectDir = join(rootDir, "my-local-ai");
@@ -61,11 +63,38 @@ function findBinary(name) {
   return candidates.find((candidate) => existsSync(candidate));
 }
 
-function runBuiltBinary(name) {
+function readFlag(names, fallback) {
+  const index = extraArgs.findIndex((arg) => names.includes(arg));
+  return index >= 0 ? extraArgs[index + 1] ?? fallback : fallback;
+}
+
+async function runBuiltBinary(name) {
   const binary = findBinary(name);
   if (!binary) {
     console.error(`Could not find ${name}${exeExt}. Run "pnpm my-local-ai:configure" and "pnpm my-local-ai:build" first.`);
     process.exit(1);
+  }
+
+  // .env supplies the defaults; llama.cpp reads LLAMA_ARG_* itself and lets any
+  // flag passed after `--` override them.
+  loadEnv();
+  const model = applyModelPreset();
+
+  if (model && !extraArgs.some((arg) => arg === "-m" || arg === "--model")) {
+    console.log(`Model: ${model}\n`);
+  }
+
+  if (name === "llama-server") {
+    const host = readFlag(["--host"], process.env.LLAMA_ARG_HOST ?? "127.0.0.1");
+    const port = readFlag(["--port"], process.env.LLAMA_ARG_PORT ?? "8080");
+
+    if (!(await isPortFree(host, Number(port)))) {
+      console.error(`Port ${port} is already in use, most likely by a llama-server that is still running.`);
+      console.error("That old server keeps answering the UI, so the new model would never show up.");
+      console.error(`\nStop it first:\n  Get-Process llama-server | Stop-Process -Force`);
+      console.error(`\nOr run this one somewhere else:\n  $env:LLAMA_ARG_PORT=8081; pnpm my-local-ai:server`);
+      process.exit(1);
+    }
   }
 
   run(binary, extraArgs, { cwd: projectDir });
@@ -82,13 +111,13 @@ switch (command) {
     run(resolveTool("ctest"), ["--test-dir", buildDir, "-C", "Release", ...extraArgs], { cwd: rootDir });
     break;
   case "server":
-    runBuiltBinary("llama-server");
+    await runBuiltBinary("llama-server");
     break;
   case "cli":
-    runBuiltBinary("llama-cli");
+    await runBuiltBinary("llama-cli");
     break;
   case "app":
-    runBuiltBinary("llama");
+    await runBuiltBinary("llama");
     break;
   default:
     console.error("Usage: node scripts\\my-local-ai\\runtime.mjs <configure|build|test|server|cli|app> [-- extra args]");
