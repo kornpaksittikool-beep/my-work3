@@ -1,18 +1,28 @@
 {
   "name": "my-work-3",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Root pnpm entrypoints for local workspace tools",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "my-local-ai:configure": "node .\\scripts\\my-local-ai.mjs configure",
+    "my-local-ai:build": "node .\\scripts\\my-local-ai.mjs build",
+    "my-local-ai:test": "node .\\scripts\\my-local-ai.mjs test",
+    "my-local-ai:server": "node .\\scripts\\my-local-ai.mjs server",
+    "my-local-ai:cli": "node .\\scripts\\my-local-ai.mjs cli",
+    "my-local-ai:app": "node .\\scripts\\my-local-ai.mjs app",
+    "my-local-ai:ui:build": "pnpm --dir .\\my-local-ai\\tools\\ui build",
+    "my-local-ai:ui:dev": "pnpm --dir .\\my-local-ai\\tools\\ui dev",
+    "my-local-ai:ui:check": "pnpm --dir .\\my-local-ai\\tools\\ui check",
+    "my-local-ai:ui:lint": "pnpm --dir .\\my-local-ai\\tools\\ui lint",
+    "my-local-ai:ui:test": "pnpm --dir .\\my-local-ai\\tools\\ui test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "packageManager": "pnpm@11.17.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.17.0",
+      "version": "11.17.0",
       "onFail": "download"
     }
   },
